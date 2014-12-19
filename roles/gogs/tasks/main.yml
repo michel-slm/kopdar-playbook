@@ -1,0 +1,41 @@
+- name: required packages
+  yum: pkg=unzip state=present
+
+- name: user -- gogs
+  user:
+    name=git
+    system=yes
+    home=/home/git
+
+- name: check if Gogs is deployed
+  stat:
+    path=/home/git/gogs
+  register: gogs
+  
+- name: deploy Gogs -- part 1
+  unarchive:
+    src=gogs_v0.5.9_linux_amd64.zip
+    dest=/home/git
+  sudo_user: git
+  when: gogs.stat.exists == False
+
+- name: deploy Gogs -- part 4
+  file: name=/home/git/{{ item }} state=absent
+  with_items:
+    - __MACOSX
+  sudo_user: git
+  when: gogs.stat.exists == False
+
+- name: Gogs init script
+  command: creates=/etc/init.d/gogs
+    cp -p /home/git/gogs/scripts/init/centos/gogs /etc/init.d/gogs
+
+- name: Gogs init script permission
+  file:
+    name=/etc/init.d/gogs
+    owner=root
+    group=root
+    mode=0755
+
+- name: Enable Gogs service
+  service: name=gogs enabled=yes state=started

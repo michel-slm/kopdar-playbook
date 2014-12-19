@@ -1,0 +1,10 @@
+---
+## file: gitservers.yml
+
+## usage: ansible-playbook -i <inventory file> gitservers.yml
+
+- hosts: gitservers
+  sudo: yes
+  roles:
+    - basic-centos-setup
+    - gogs
