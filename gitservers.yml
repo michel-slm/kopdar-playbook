@@ -7,4 +7,5 @@
   sudo: yes
   roles:
     - basic-centos-setup
+    - nginx
     - gogs

@@ -39,3 +39,16 @@
 
 - name: Enable Gogs service
   service: name=gogs enabled=yes state=started
+
+- name: Use nginx as reverse proxy for Gogs
+  copy:
+    src=nginx-gogs.conf
+    dest=/etc/nginx/conf.d/gogs.conf
+    owner=root
+    group=root
+    mode=0644
+  register: nginx_gogs
+
+- name: Reload nginx service if necessary
+  service: name=nginx state=reloaded
+  when: nginx_gogs.changed

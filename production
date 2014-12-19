@@ -1,11 +1,11 @@
 # inventory file: production
 
-[controlservers]
+[configservers]
 ansible-tower
 
 [gitservers]
 centos1
 
 [combined:children]
-virtualbox
+configservers
 gitservers
