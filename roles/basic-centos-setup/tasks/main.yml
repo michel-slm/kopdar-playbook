@@ -1,0 +1,40 @@
+- name: adjust hostname
+  hostname: name={{ hostname }}
+
+- name: user -- michel
+  user:
+    name=michel
+    groups=wheel
+    shell=/bin/bash
+    state=present
+    uid=1000
+
+- name: SSH key -- michel
+  authorized_key:
+    user=michel
+    key="{{ item }}"
+    state=present
+  with_file:
+    - michel.pub
+
+- name: Ensure repositories are enabled
+  yum: pkg=epel-release state=present
+
+- name: Ensure etkeeper is installed
+  yum: pkg=etckeeper state=present
+  register: etckr_res
+
+- name: Initialize etckeeper
+  shell: etckeeper init && etckeeper commit "Initial commit"
+  when: etckr_res.changed
+
+- name: Ensure sudo is installed
+  yum: pkg=sudo state=present
+
+- name: sudo access
+  copy:
+    src=sudoers-wheel
+    dest=/etc/sudoers.d/wheel
+    owner=root
+    group=root
+    mode=0440

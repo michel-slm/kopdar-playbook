@@ -1,0 +1,5 @@
+---
+# file: host_vars/centos1
+
+
+hostname: centos1.lxc
