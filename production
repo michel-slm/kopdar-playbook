@@ -5,6 +5,7 @@ ansible-tower
 
 [gitservers]
 centos1
+centos2
 
 [combined:children]
 configservers
