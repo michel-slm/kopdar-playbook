@@ -1,5 +1,5 @@
 - name: required packages
-  yum: pkg=unzip state=present
+  yum: pkg=git,unzip state=present
 
 - name: user -- gogs
   user:
@@ -37,6 +37,9 @@
     group=root
     mode=0755
 
+- name: Create log directory
+  file: path=/home/git/gogs/log state=directory owner=git group=git mode=0755
+
 - name: Enable Gogs service
   service: name=gogs enabled=yes state=started
 
@@ -51,4 +54,4 @@
 
 - name: Reload nginx service if necessary
   service: name=nginx state=reloaded
-  when: nginx_gogs.changed
+  #when: nginx_gogs.changed
