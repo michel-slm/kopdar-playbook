@@ -20,7 +20,7 @@
 - name: Ensure repositories are enabled
   yum: pkg=epel-release state=present
 
-- name: Ensure etkeeper is installed
+- name: Ensure etckeeper is installed
   yum: pkg=etckeeper state=present
   register: etckr_res
 
